@@ -11,7 +11,7 @@
             var angleList = [22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5];  //转盘角度
             var turnPeriod = true; //防止重复点击抽奖
             var lotteryIndex = 0; //中奖列表滚动位置
-            var lotteryPx = 26; //中奖列表滚动Px
+            var lotteryPx = 23.6; //中奖列表滚动Px
             var state = {
                 lotteryLength: 5, //中奖列表长度
                 prizeImg: '', //获取中奖图片背景
@@ -33,11 +33,11 @@
                 } else {
                     var num = lotteryPx * lotteryIndex;
                     $('.get-ward-wrap').css({'top': -num, 'transition': 'all 1s ease;'}); //转盘指针位置
-                    $('.get-ward-wrap').removeClass("artive");
+                    $('.get-ward-next').removeClass("artive");
                     $('.get-ward-wrap').children().eq(lotteryIndex).addClass("artive");
                     lotteryIndex += 1;
                 }
-            },2000);
+            },3000);
 
 
             $('.turntable-min-wrap').bind('click', function(){ //点击抽奖
