@@ -1,0 +1,12 @@
+.container {
+    width: 100%;
+}
+.content {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    background: #000;
+}
+li {
+    flex: 1;
+}
