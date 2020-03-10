@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="Viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+    <script src="./js/zepto.js"></script>
+    <script type="text/javascript">
+        Zepto(function($) {
+            var angleList = [22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5];  //转盘角度
+            var turnPeriod = true; //防止重复点击抽奖
+            var lotteryIndex = 0; //中奖列表滚动位置
+            var lotteryPx = 26; //中奖列表滚动Px
+            var state = {
+                lotteryLength: 5, //中奖列表长度
+                prizeImg: '', //获取中奖图片背景
+                prizeName: '', //奖品名称
+                prizeNum: '', //抽奖次数
+                tipText: '', //抽奖剩余次数提示
+                prizeLog: '', //获奖列表
+                angle: 3240, //转盘转动到指定位置
+                advert: '', //获取单张广告图片
+                message: '', //次数为0时提示
+                advertBanner: [] //广告轮播图
+            };
+
+            //中奖列表滚动
+            var timer = setInterval(function(){
+                if (lotteryIndex >= state.lotteryLength) {
+                    $('.get-ward-wrap').css({'top': '0'}); //转盘指针位置
+                    lotteryIndex = 0;
+                } else {
+                    var num = lotteryPx * lotteryIndex;
+                    $('.get-ward-wrap').css({'top': -num, 'transition': 'all 1s ease;'}); //转盘指针位置
+                    $('.get-ward-wrap').removeClass("artive");
+                    $('.get-ward-wrap').children().eq(lotteryIndex).addClass("artive");
+                    lotteryIndex += 1;
+                }
+            },2000);
+
+
+            $('.turntable-min-wrap').bind('click', function(){ //点击抽奖
+                if (!turnPeriod) return; //防止重复点击抽奖
+                turnPeriod = false; //防止重复点击抽奖
+                getDrawList();  //抽奖接口
+            });
+
+            //抽奖接口  转盘转动
+            function getDrawList () {
+                $('.turntable-min-wrap').css({'transform': 'rotate('+state.angle+'deg)', 'transition': 'all 4.5s ease;'}); //转盘指针位置
+                //判断延时4.5s后 停止
+                var clear = setTimeout(function () {
+                    turnPeriod = true; //防止重复点击抽奖
+                    $('.windows').show(); //显示普通红包
+                    $('.turntable-min-wrap').css({'transform': 'rotate(0deg)', 'transition': 'all 0s ease;'});  //转盘指针清0
+                    clearInterval(clear); //清除定时器
+                }, 4500); //时间4.5s后停止转动
+            }
+
+            //再抽一次
+            $('.once-again').bind('click', function () {
+                $('.windows').hide();
+                if (state.prizeNum === 0) {
+                    $('.windows-tc-ts').show();  //打开提示弹窗
+                } else {
+                    getDrawList();  //抽奖接口
+                }
+            });
+
+            //看看
+            $('.look').bind('click', function () {
+                $('.windows').hide();
+            });
+        });
+    </script>
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+<body style="padding: 0;margin: 0;">
+  <div class="container">
+    <div class="yinyue">
+      <img class="pointer" src="./img/yignyue_.png" alt="">
+    </div>
+      <!--顶部轮播-->
+    <div class="get-ward">
+        <div class="get-ward-wrap">
+            <div class="get-ward-next artive">恭喜UID：2345456获得让XXXXXX</div>
+            <div class="get-ward-next">恭喜UID：2345456获得让XXXXXX</div>
+            <div class="get-ward-next">恭喜UID：2345456获得让XXXXXX</div>
+            <div class="get-ward-next">恭喜UID：2345456获得让XXXXXX</div>
+            <div class="get-ward-next">恭喜UID：2345456获得让XXXXXX</div>
+            <div class="get-ward-next">恭喜UID：2345456获得让XXXXXX</div>
+        </div>
+    </div>
+      <!--抽奖转盘-->
+      <div class="turntable-content">
+          <div class="turntable">
+              <div class="turntable-min">
+                  <div class="turntable-min-wrap"> <!--style={'transform: rotate('+angle+'deg); transition: all ' + prizeTimer + 's ease;'}-->
+                      <div class="turntable-title">
+                          <div class="title-top">抽奖</div>
+                      </div>
+                  </div>
+                  <!--奖品-->
+                  <div class="prize one0">
+                      <div class="prize-text">123</div>
+                      <img class="prize-img" src="./img/yignyue_.png"/>
+                  </div>
+                  <div class="prize one1">
+                      <div class="prize-text">123</div>
+                      <img class="prize-img" src="./img/yignyue_.png"/>
+                  </div>
+                  <div class="prize one2">
+                      <div class="prize-text">123</div>
+                      <img class="prize-img" src="./img/yignyue_.png"/>
+                  </div>
+                  <div class="prize one3">
+                      <div class="prize-text">123</div>
+                      <img class="prize-img" src="./img/yignyue_.png"/>
+                  </div>
+                  <div class="prize one4">
+                      <div class="prize-text">123</div>
+                      <img class="prize-img" src="./img/yignyue_.png"/>
+                  </div>
+                  <div class="prize one5">
+                      <div class="prize-text">123</div>
+                      <img class="prize-img" src="./img/yignyue_.png"/>
+                  </div>
+                  <div class="prize one6">
+                      <div class="prize-text">123</div>
+                      <img class="prize-img" src="./img/yignyue_.png"/>
+                  </div>
+                  <div class="prize one7">
+                      <div class="prize-text">123</div>
+                      <img class="prize-img" src="./img/yignyue_.png"/>
+                  </div>
+              </div>
+          </div>
+      </div>
+    <div class="btn-ward">
+      <button class="btn">我的奖品</button>
+      <p class="rest-chance">剩余4次，已抽1次</p>
+    </div>
+      <!--中奖奖品弹窗-->
+      <div class="windows">
+          <div class="windows-bg">
+              <span class="windows-content">获得9999电脑一台</span>
+              <div class="select">
+                  <div class="recur once-again">再抽一次</div>
+                  <div class="recur look">看看</div>
+              </div>
+          </div>
+          <!--<img class="publicity" src="./img/img_guangao_.png" alt=""/>-->
+          <!--<img class="close" src="./img/icon_tuichu.png" alt=""/>-->
+      </div>
+  </div>
+</body>
+</html>
