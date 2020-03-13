@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script>
+  window.onload = function(){
+       var i=1;
+       var n=0;
+       var imgs = document.getElementsByTagName('img');  //获取所有的img标签
+       var draw = document.getElementById('draw');  //获取抽奖按钮
+       //抽奖点击事件开启定时器
+       draw.onclick=function(){    
+           console.log('抽奖点击')
+           drawStart();
+       }
+       //定时器动画
+       var drawStart = function() {   
+           n++;    
+        if(n%5 === 0) {
+            if(i<=7) {
+             i++;
+          }else{
+              i=1;
+              i++;
+          }  
+          console.log(i)   
+        imgs[i-2].src='./img/img'+(i-1)+'.png';   
+        imgs[i-1].src="./img/img"+i.toString()+i.toString()+".png";
+        console.log('./img/img'+(i-1)+'.png');
+        console.log('前一个', imgs[i-2].src)
+        console.log('下一个', imgs[i].src)      
+        }
+        requestAnimationFrame(drawStart);  
+       }
+  }
+</script>
+<body>
+    <table>
+        <tr>
+            <td><img src="./img/img11.png"/></td>
+            <td><img src="./img/img2.png"/></td>
+            <td><img src="./img/img3.png"/></td>
+        </tr>
+        <tr>
+            <td><img src="./img/img4.png"/></td>
+            <td class="draw" id="draw">开始抽奖</td>
+            <td><img src="./img/img5.png"/></td>
+        </tr>
+        <tr>
+            <td><img src="./img/img6.png"/></td>
+            <td><img src="./img/img7.png"/></td>
+            <td><img src="./img/img8.png"/></td>
+        </tr>
+    </table>   
+</body>
+<style>
+    table{
+        border: 1px solid black;
+        margin: 100px auto;
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+    tr{
+        text-align: center;
+        vertical-align: center;
+    }
+    td{
+        border: 1px solid black;
+        height: 100px;
+        width: 100px;
+        }
+        img{
+        height: 100px;
+        width: 100px;  
+        }
+        .draw{
+            cursor: pointer;
+        }
+</style>
+</html>

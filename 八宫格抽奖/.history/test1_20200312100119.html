@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script>
+    //最终停留的位置是index,以及 num % imgs.length-1
+  window.onload = function(){
+       var i=1;      //控制图片停止的下标
+       var n=0;       //  控制动画的速度
+       var num = 0;    //控制动画旋转的圈数
+       var timer = null;     //定时器名称
+       var chance = 3;       //抽奖机会
+       var ary=[0, 1, 2, 4, 7, 6, 5, 3];   //图片切换的img标签的下标的顺序
+       var imgs = document.getElementsByTagName('img');  //获取所有的img标签
+       var draw = document.getElementById('draw');  //获取抽奖按钮
+       //抽奖点击事件开启定时器
+       draw.onclick=function(){   
+           if(chance > 0){
+            cancelAnimationFrame(timer); //每次重新点击清空动画 
+            num = Math.floor(Math.random() * 10) + i + 10  //转数在i的基础上增加10+Math.floor(Math.random() * 10)趟
+            drawStart();
+            chance--;
+           }else{
+               alert('您没有机会了')
+           }
+
+
+       }
+       //定时器动画
+       var drawStart = function() {   
+           n++;  
+        if(n%12 === 0) {
+            //当动画停止之后再次点击抽奖在此位置重新开始旋转
+            if(i % num < num) {
+                var index = i % imgs.length;
+                if(index === 0) {
+                    imgs[ary[7]].src='./img/img8.png'; //上一张图片设置白色背景 
+                    imgs[ary[0]].src="./img/img11.png";  //下一张图片设置蓝色背景
+                }else{
+                    imgs[ary[index-1]].src='./img/img'+index+'.png'; //上一张图片设置白色背景                
+                    imgs[ary[index]].src="./img/img"+(index+1).toString()+(index+1).toString()+".png";  //下一张图片设置蓝色背景
+                }             
+                i++;
+            }
+        }
+        timer = requestAnimationFrame(drawStart);    
+        if(i%num === 0) {
+            console.log('取消该次动画', i);
+            cancelAnimationFrame(timer);//可以取消该次动画。
+        } 
+       }
+  }
+</script>
+<body>
+    <table>
+        <tr>
+            <td>
+                <img src="./img/img11.png"/>
+                <span>一等奖</span>
+            </td>
+            <td>
+                <img src="./img/img2.png"/>
+                <span>二等奖</span>
+            </td>
+            <td>
+                <img src="./img/img3.png"/>
+                <span>三等奖</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="./img/img8.png"/>
+                <span>三等奖</span>
+            </td>
+            <td class="draw" id="draw">开始抽奖</td>
+            <td>
+                <img src="./img/img4.png"/>
+                <span>八等奖</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="./img/img7.png"/>
+                <span>七等奖</span>
+            </td>
+            <td>
+                <img src="./img/img6.png"/>
+                <span>六等奖</span>
+            </td>
+            <td>
+                <img src="./img/img5.png"/>
+                <span>五等奖</span>
+            </td>
+        </tr>
+    </table>   
+</body>
+<style>
+    table{
+        border: 1px solid black;
+        margin: 100px auto;
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+    tr{
+        text-align: center;
+        vertical-align: center;
+    }
+    td{
+        border: 1px solid black;
+        padding: 0;
+        box-sizing: border-box;
+        }
+        img{
+            height: 100px;
+            width: 100px;
+           display: block;
+        }
+        .draw{
+            cursor: pointer;
+        }
+</style>
+</html>

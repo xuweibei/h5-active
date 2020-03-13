@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+   <div class="box">
+       <div class="top">
+           设置抽奖级别:       
+           <select  id="awards" onchange="gradeChange()">
+            <option value="">---请选择---</option>
+            <option value=1>一等奖</option>
+            <option value=2>二等奖</option>
+            <option value=3>三等奖</option>
+            <option value=4>四等奖</option>
+            <option value=5>五等奖</option>
+            <option value=6>六等奖</option>
+            <option value=7>七等奖</option>
+            <option value=8>八等奖</option>
+          </select>
+       </div>   
+    <table>
+        <tr>
+            <td>
+                <img src="./img/img11.png"/>
+                <span>一等奖</span>
+            </td>
+            <td>
+                <img src="./img/img2.png"/>
+                <span>二等奖</span>
+            </td>
+            <td>
+                <img src="./img/img3.png"/>
+                <span>三等奖</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="./img/img8.png"/>
+                <span>八等奖</span>
+            </td>
+            <td class="draw" id="draw">开始抽奖</td>
+            <td>
+                <img src="./img/img4.png"/>
+                <span>四等奖</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="./img/img7.png"/>
+                <span>七等奖</span>
+            </td>
+            <td>
+                <img src="./img/img6.png"/>
+                <span>六等奖</span>
+            </td>
+            <td>
+                <img src="./img/img5.png"/>
+                <span>五等奖</span>
+            </td>
+        </tr>
+    </table>
+    <div id="result"></div>   
+   </div>
+   <script>
+    //最终停留的位置是index,以及 num % imgs.length-1
+       var i=1;      //控制图片停止的下标
+       var num = 0;    //控制动画旋转的圈数
+       var timer = null;     //定时器名称
+       var chance = 3;       //抽奖机会    
+       var awardIndex = '';   //设置中奖等级
+       var index = 0;   //控制中奖图片的下标
+       var speed = 100;   //控制速度
+       var ary=[0, 1, 2, 4, 7, 6, 5, 3];   //图片切换的img标签的下标的顺序
+       var imgs = document.getElementsByTagName('img');  //获取所有的img标签
+       var spans = document.getElementsByTagName('span');  //获取所有的span标签
+       var draw = document.getElementById('draw');  //获取抽奖按钮
+
+       //抽奖点击事件开启定时器
+       draw.onclick= function(){
+        if(chance > 0){
+            // cancelAnimationFrame(timer); //每次重新点击清空动画 
+            clearTimeout(timer);
+            clearTurnTable();
+            if(awardIndex) {   //如果设置了抽奖结果
+                num = Number(awardIndex) +  16; //控制转数  在两圈的基础上
+            }else {    //如果没有设置就随机
+                num = Math.floor(Math.random() * 8) +1 +  16  //转数在i的基础上增加10+Math.floor(Math.random() * 10)趟   
+            }          
+            timer = setTimeout(drawStart, speed);
+            chance--;
+           }else{
+               alert('您没有机会了');
+           }
+       }
+        //定时器动画     
+       var drawStart =  function () {   
+          console.log('定时器动画'); 
+          //控制速度
+
+           if(i < num-8) {
+              timer = setTimeout(drawStart, speed);
+           } else if(i>=num-8 && i<=num) {
+               speed += (i-num+8)*10;
+               timer = setTimeout(drawStart, speed);
+           }
+           if(i < num) {
+                index = i % imgs.length;
+                console.log('index', index)
+                if(index === 0) {
+                    imgs[ary[7]].src='./img/img8.png'; //上一张图片设置白色背景 
+                    imgs[ary[0]].src="./img/img11.png";  //下一张图片设置蓝色背景
+                }else{
+                    imgs[ary[index-1]].src='./img/img'+index+'.png'; //上一张图片设置白色背景                
+                    imgs[ary[index]].src="./img/img"+(index+1).toString()+(index+1).toString()+".png";  //下一张图片设置蓝色背景
+                }             
+                i++;
+            } 
+        if( i === num ) {
+            clearTimeout(timer);//可以取消该次动画。         
+            var text = spans[ary[index]].innerHTML;
+             document.getElementById('result').innerHTML = '恭喜您获得'+text;
+        } 
+       }
+       //选择中奖级别
+      function gradeChange() {
+           console.log('选择中奖级别');
+           var opts = document.getElementById('awards');
+           awardIndex= opts.options[opts.selectedIndex].value;
+       }
+
+       //重置抽奖转盘
+      function clearTurnTable() {
+        document.getElementById('result').innerHTML = '';
+          i=1;
+          speed=100;
+          if(index !== 0) {
+            imgs[ary[0]].src="./img/img11.png";  //第一张图片设置蓝色背景 
+            imgs[ary[index]].src="./img/img"+(index+1).toString()+".png";  //当前位置图片变为白色
+          }
+      }
+</script>
+</body>
+<style>
+    .box{
+        margin: 100px auto;
+        display: inline-block;
+        margin-left: 600px;
+    }
+    .top {
+       margin-bottom: 10px;
+    }
+    select{
+        width: 150px;
+        text-align-last:center;
+    }
+    table{
+        border: 1px solid black;
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+    tr{
+        text-align: center;
+        vertical-align: center;
+    }
+    td{
+        border: 1px solid black;
+        padding: 0;
+        box-sizing: border-box;
+        }
+        img{
+            height: 100px;
+            width: 100px;
+           display: block;
+        }
+        .draw{
+            cursor: pointer;
+            color: orange;
+        }
+        #result{
+            text-align: center;
+            padding: 10px;
+        }
+</style>
+</html>
