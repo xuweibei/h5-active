@@ -8,7 +8,7 @@
   var againAccel = 30 // 快中奖的加速度
 
   function LuckUp(obj, ZN) {
-    var topZH = (obj.height() + 20 ) / 37.5 ; //移动出屏幕的top位置
+    var topZH = (obj.height() + 20 ) / 100 ; //移动出屏幕的top位置
     obj.animate(
       {
         top: "-" + topZH.toFixed(2) + "rem"
@@ -41,6 +41,7 @@
     var heightZ = obj.height() - 20;
     //获取按钮的高度。
     var heightZ1 = heightZ - 2;
+    heightZ = 80;
     //获取显示数字的宽度
     var widthH = widthZ - heightZ;
     var idF = obj.attr("id");
@@ -50,15 +51,15 @@
 		var htmlStr="<div id='"+obj.attr('id')+"sy' style='position:relative;'>"
     obj.css("overflow", "hidden");
     //当前数字位置。
-    var offLeft = 10;
+    var offLeft = 16;
 
     for (var i = 0; i < num; i++) {
       //循环建立多少位数，初始化并添加相关事件。
       //初始化生成随机数字
       var sj = GetRandomNum(0, 9);
       //生成数字并进行相关div的生成排列位置。
-        htmlStr+="<div class='"+obj.attr('id')+"Class' style='top:0.26rem;position:absolute;line-height:"+(heightZ / 37.5).toFixed(2)+"rem;left:"+(offLeft / 37.5).toFixed(2)+"rem;width:"+parseInt(widthH / num)+"px;height:"+heightZ1+"px;'>"+sj+"</div>";
-      offLeft += parseInt(widthH / num) + 12;
+        htmlStr+="<div class='"+obj.attr('id')+"Class' style='top:0.6rem;position:absolute;line-height:"+((heightZ +10) / 100).toFixed(2)+"rem;left:"+(offLeft / 100).toFixed(2)+"rem;width:"+parseInt(widthH / num)+"px;height:"+heightZ1 / 100+"rem;'>"+sj+"</div>";
+      offLeft += parseInt(80 / num) + 56;
     }
     obj.append(htmlStr);
     $('body').append('<div class="btn">立刻抽奖</div>')
@@ -71,13 +72,11 @@
         arrLength = [];
         obj.attr("ZN", 1);
         $("." + obj.attr("id") + "Class").each(function(i) {
-          console.log($(this).css("top"))
           //对每位数字进行随机速度生成
           var _ZNY = GetRandomNum(50, 100);
           //本数字的划出行为。
           LuckUp($(this), _ZNY);
           LuckUp1($(this), _ZNY, obj.attr("id"), i + 1, 0, _ZNY, idF);
-          console.log($(this).css("top"),'热土')
         });
       }
     });
@@ -91,8 +90,7 @@
 
   function LuckUp1(obj, ZN, objName, num, num1, YSZN, idF) {
     //获取新添数字的高度位置
-    var tops = (parseInt(obj.css("top")) + parseInt(obj.height())) / 37.5;
-    tops = tops.toFixed(2);
+    var tops = (parseInt(obj.css("top")) + parseInt(obj.height())) / 100;
     var width = obj.width();
     var height = obj.height();
     //获取新添数字距离左边的位置
@@ -119,15 +117,12 @@
         num1 +
         "' style='top:" +
         tops +
-        "rem;line-height:" +
-        height +
-        "px;left:" +
+        "rem;left:" +
         lefts +
-        "rem;position:absolute;line-height:"+parseInt(obj.height())+"px;width:" +
+        "rem;position:absolute;line-height:"+180 / 100+"rem;width:" +
         width +
         "px;height:" +
-        height +
-        "px;'>" +
+        260 / 100+"rem;'>" +
         val +
         "</div>"
     );
@@ -194,7 +189,6 @@
   function isOver() {
     const arr = Array.from(new Set(arrLength));
     if (arr.length >= totalNum) {
-      $("#laohuji0Click").html("开");
       clickOnce = true;
     }
   }
