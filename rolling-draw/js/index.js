@@ -4,12 +4,14 @@
   var totalNum = 0;//号码的位数
   var totalArr = [];//中奖集合
   var accel = 6;//加速度
+  var lineAccel = 200 //计算中奖的常量，达到这个值就开始减速
+  var againAccel = 30 // 快中奖的加速度
 
   function LuckUp(obj, ZN) {
-    var topZH = obj.height() - 10; //移动出屏幕的top位置
+    var topZH = (obj.height() + 20 ) / 100 ; //移动出屏幕的top位置
     obj.animate(
       {
-        top: "-" + topZH + "px"
+        top: "-" + topZH.toFixed(2) + "rem"
       },
       ZN,
       "linear",
@@ -39,27 +41,28 @@
     var heightZ = obj.height() - 20;
     //获取按钮的高度。
     var heightZ1 = heightZ - 2;
+    heightZ = 80;
     //获取显示数字的宽度
     var widthH = widthZ - heightZ;
     var idF = obj.attr("id");
-		obj.css("overflow","hidden");
+		// obj.css("overflow","hidden");
     obj.attr("ZN", 0);
     //新建一个相对div来进行绝对div的存储。大小为0,0 这样可以移动到任何位置显示。
 		var htmlStr="<div id='"+obj.attr('id')+"sy' style='position:relative;'>"
-    // obj.css("overflow", "hidden");
+    obj.css("overflow", "hidden");
     //当前数字位置。
-    var offLeft = 6;
+    var offLeft = 16;
 
     for (var i = 0; i < num; i++) {
       //循环建立多少位数，初始化并添加相关事件。
       //初始化生成随机数字
       var sj = GetRandomNum(0, 9);
       //生成数字并进行相关div的生成排列位置。
-        htmlStr+="<div class='"+obj.attr('id')+"Class' style='top:10px;position:absolute;line-height:"+heightZ+"px;left:"+offLeft+"px;width:"+parseInt(widthH / num)+"px;height:"+heightZ1+"px;'>"+sj+"</div>";
-      offLeft += parseInt(widthH / num)+20;
+        htmlStr+="<div class='"+obj.attr('id')+"Class' style='top:0.6rem;position:absolute;line-height:"+((heightZ +10) / 100).toFixed(2)+"rem;left:"+(offLeft / 100).toFixed(2)+"rem;width:"+parseInt(widthH / num)+"px;height:"+heightZ1 / 100+"rem;'>"+sj+"</div>";
+      offLeft += parseInt(80 / num) + 56;
     }
     obj.append(htmlStr);
-    obj.append('<div class="btn">立刻抽奖</div>')
+    $('body').append('<div class="btn">立刻抽奖</div>')
 
     // $("#" + obj.attr("id") + "Click").bind("click", function() {
       $(".btn").bind("click", function() {
@@ -87,12 +90,11 @@
 
   function LuckUp1(obj, ZN, objName, num, num1, YSZN, idF) {
     //获取新添数字的高度位置
-    var tops = -parseInt(obj.css("top")) + parseInt(obj.height());
-
+    var tops = (parseInt(obj.css("top")) + parseInt(obj.height())) / 100;
     var width = obj.width();
     var height = obj.height();
     //获取新添数字距离左边的位置
-    var lefts = parseInt(obj.css("left"));
+    var lefts = parseFloat(obj.css("left"));
     //获取上一个数字的数字值
     var val = parseInt(obj.html());
     //数字+1作为本次数字
@@ -115,15 +117,12 @@
         num1 +
         "' style='top:" +
         tops +
-        "px;line-height:" +
-        height +
-        "px;left:" +
+        "rem;left:" +
         lefts +
-        "px;position:absolute;line-height:"+parseInt(obj.height())+"px;width:" +
+        "rem;position:absolute;line-height:"+180 / 100+"rem;width:" +
         width +
         "px;height:" +
-        height +
-        "px;'>" +
+        260 / 100+"rem;'>" +
         val +
         "</div>"
     );
@@ -140,7 +139,8 @@
         _ZN = $("#" + objName).attr("ZN");
         if (_ZN == 1) {
           ZN += accel;
-          if (ZN > 200) {
+          if (ZN > lineAccel) {
+            ZN += accel + againAccel;
             if (obj.attr("index") === "1" && val === totalArr[0]) {
               arrLength.push(obj.attr("index"));
               isOver();
@@ -189,7 +189,6 @@
   function isOver() {
     const arr = Array.from(new Set(arrLength));
     if (arr.length >= totalNum) {
-      $("#laohuji0Click").html("开");
       clickOnce = true;
     }
   }
