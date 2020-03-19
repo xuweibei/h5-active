@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script>
+  window.onload = function(){
+       var i=1;
+       var n=0;
+       var num = 0;
+       var timer = null;
+       var ary=[0, 1, 2, 4, 7, 6, 5, 3];   //图片切换的img标签的下标的顺序
+       var imgs = document.getElementsByTagName('img');  //获取所有的img标签
+       var draw = document.getElementById('draw');  //获取抽奖按钮
+       //抽奖点击事件开启定时器
+       draw.onclick=function(){   
+         cancelAnimationFrame(timer);//可以取消该次动画。   
+           num = Math.floor(Math.random() * imgs.length) + 10
+           console.log('抽奖点击', num % imgs.length)
+           drawStart();
+       }
+       //定时器动画
+       var drawStart = function() {   
+           console.log('num',num);
+           n++;  
+        if(n%12 === 0) {
+            console.log('i', i);
+            if(i % num < num) {
+                var index = i % imgs.length;
+                console.log('index', index);
+                if(index === 0) {
+                    imgs[ary[7]].src='./img/img8.png'; //上一张图片设置白色背景 
+                    imgs[ary[0]].src="./img/img11.png";  //下一张图片设置蓝色背景
+                }else{
+                    imgs[ary[index-1]].src='./img/img'+index+'.png'; //上一张图片设置白色背景                
+                    imgs[ary[index]].src="./img/img"+(index+1).toString()+(index+1).toString()+".png";  //下一张图片设置蓝色背景
+                }             
+                i++;
+            }
+        }
+        timer = requestAnimationFrame(drawStart);    
+        if( i%num === 0) {
+            console.log('取消该次动画');
+            cancelAnimationFrame(timer);//可以取消该次动画。
+        } 
+       }
+  }
+</script>
+<body>
+    <table>
+        <tr>
+            <td><img src="./img/img11.png"/></td>
+            <td><img src="./img/img2.png"/></td>
+            <td><img src="./img/img3.png"/></td>
+        </tr>
+        <tr>
+            <td><img src="./img/img8.png"/></td>
+            <td class="draw" id="draw">开始抽奖</td>
+            <td><img src="./img/img4.png"/></td>
+        </tr>
+        <tr>
+            <td><img src="./img/img7.png"/></td>
+            <td><img src="./img/img6.png"/></td>
+            <td><img src="./img/img5.png"/></td>
+        </tr>
+    </table>   
+</body>
+<style>
+    table{
+        border: 1px solid black;
+        margin: 100px auto;
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+    tr{
+        text-align: center;
+        vertical-align: center;
+    }
+    td{
+        border: 1px solid black;
+        height: 100px;
+        width: 100px;
+        }
+        img{
+        height: 100px;
+        width: 100px;  
+        }
+        .draw{
+            cursor: pointer;
+        }
+</style>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <ul class="content">
+            <li class="egg" onclick="clickEgg(this)" >
+                <img src='images/egg0.png' alt=""/>
+            </li>
+            <li class="egg" onclick="clickEgg(this)" >
+                <img src='images/egg0.png' alt=""/>
+            </li>
+            <li class="egg" onclick="clickEgg(this)" >
+                <img src='images/egg0.png' alt=""/>
+            </li>
+            <li class="egg" onclick="clickEgg(this)" >
+                <img src='images/egg0.png' alt=""/>
+            </li>
+            <li class="egg" onclick="clickEgg(this)" >
+                <img src='images/egg0.png' alt=""/>
+            </li>
+            <li class="egg" onclick="clickEgg(this)" >
+                <img src='images/egg0.png' alt=""/>
+            </li>
+            <li class="egg" onclick="clickEgg(this)" >
+                <img src='images/egg0.png' alt=""/>
+            </li>
+            <li class="egg" onclick="clickEgg(this)" >
+                <img src='images/egg0.png' alt=""/>
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+    let isClick = false
+    let eggCount = 8
+    function clickEgg(el) {
+        // console.log(el);
+        if (isClick || eggCount < 0) return
+        isClick = true
+        let count = 3; //动画次数
+        let thisImg = el.children[0]
+        // console.log(thisImg);
+        let num = 4
+
+        let timer = setInterval(function() {
+            if (num < 4) {
+                console.log(num);
+                thisImg.src = `./images/egg${num}.png`
+            } else {
+                num = 0;
+                count--;
+            }
+            if (count === 0) {
+                clearInterval(timer); //停止动画
+                // 处理业务逻辑
+                isClick =  false
+                thisImg.src = './images/egg5.png'
+                // alert('蛋蛋破了');
+            }
+            num++
+        }, 500)
+        eggCount--
+    }
+</script>
+</html>
