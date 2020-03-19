@@ -1,0 +1,72 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+}
+.container{
+    width: 100%;
+    height: 350px;
+    margin: 0 auto;
+    margin-top: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.casket{
+    position: absolute;
+    width: 324px;
+    height: 324px;
+    box-sizing: border-box;
+    border: 12px solid #919191;
+    border-radius: 4px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.casket-across{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100px;
+    box-sizing: border-box;
+    border-bottom:4px solid #000000;
+}
+.across-two{
+    top: 100px;
+}
+.casket-upright{
+    position: absolute;
+    left: 100px;
+    top: 0;
+    height: 300px;
+    box-sizing: border-box;
+    border-right:4px solid #000000;
+}
+.upright-two{
+    left: 200px;
+}
+
+/*模块样式*/
+.module{
+    width: 100px;
+    height: 100px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*悔一步*/
+.repent{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 36px;
+    cursor: pointer;
+    width: 140px;
+    height: 60px;
+    background: blue;
+    color: white;
+    margin: 20px auto;
+}

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2048</title>
+    <script src="./js/zepto.js"></script>
+    <script type="text/javascript">
+        Zepto(function($) {
+            // 延时器
+            var optional = true; //防止连续点击
+            var arr1 = [0,0,0]; //2048的第一行数组
+            var arr2 = [2,0,0]; //2048的第二行数组
+            var arr3 = [0,2,0]; //2048的第三行数组
+            var arr = arr1.concat(arr2,arr3); //将数组都push到一起用来渲染循环页面
+            var arrRatio = []; //判断当前数组与移动后的数组是否有变动
+            for (var i=0;i<9;i++){ //循环遍历将arr渲染到页面上
+                $('.module').eq(i).html(arr[i] === 0 ? '' : arr[i]);
+                if (arr[i] === 2) { //判断为2时改变该模块的颜色
+                    $('.module').eq(i).css("background", "DarkOrange");
+                }
+            }
+            //手指移动事件
+            $(window).keydown(function(e) {
+                if (!optional) return; //防止连续操作
+                optional = false; //防止连续操作
+                arrRatio = arr; //用来做对比移动后的数组是否有变动
+                if (e.keyCode == 37) { //左
+                    Promise.all([getData(arr1), getData(arr2), getData(arr3)]).then(function(data) { //三份数组都移动好后重新渲染页面
+                        //将位移好后的数组重新赋值
+                        arr = data[0].concat(data[1], data[2]);
+                        arr1 = data[0];
+                        arr2 = data[1];
+                        arr3 = data[2];
+                        drawingHtml(arr); //将位移好后的数组重新赋值渲染
+                    });
+                }else if (e.keyCode == 38) { //上
+                    var arrtop1 = [arr[0], arr[3], arr[6]];
+                    var arrtop2 = [arr[1], arr[4], arr[7]];
+                    var arrtop3 = [arr[2], arr[5], arr[8]];
+                    Promise.all([getData(arrtop1), getData(arrtop2), getData(arrtop3)]).then(function(data) { //三份数组都移动好后重新渲染页面
+                        //将位移好后的数组重新赋值
+                        arr1 = [data[0][0], data[1][0], data[2][0]];
+                        arr2 = [data[0][1], data[1][1], data[2][1]];
+                        arr3 = [data[0][2], data[1][2], data[2][2]];
+                        arr = arr1.concat(arr2, arr3);
+                        drawingHtml(arr); //将位移好后的数组重新赋值渲染
+                    });
+                }else if (e.keyCode == 39) { //右
+//                    getDataRigth(arr2)
+                    Promise.all([getDataRigth(arr1), getDataRigth(arr2), getDataRigth(arr3)]).then(function(data) { //三份数组都移动好后重新渲染页面
+                        //将位移好后的数组重新赋值
+                        arr = data[0].concat(data[1], data[2]);
+                        arr1 = data[0];
+                        arr2 = data[1];
+                        arr3 = data[2];
+                        drawingHtml(arr); //将位移好后的数组重新赋值渲染
+                    });
+                }else if (e.keyCode == 40) { //下
+                    var arrtop1 = [arr[0], arr[3], arr[6]];
+                    var arrtop2 = [arr[1], arr[4], arr[7]];
+                    var arrtop3 = [arr[2], arr[5], arr[8]];
+                    Promise.all([getDataRigth(arrtop1), getDataRigth(arrtop2), getDataRigth(arrtop3)]).then(function(data) {
+                        //将位移好后的数组重新赋值
+                        arr1 = [data[0][0], data[1][0], data[2][0]];
+                        arr2 = [data[0][1], data[1][1], data[2][1]];
+                        arr3 = [data[0][2], data[1][2], data[2][2]];
+                        arr = arr1.concat(arr2, arr3);
+                        drawingHtml(arr); //将位移好后的数组重新赋值渲染
+                    });
+                }
+            });
+             //            向左、向上移動
+            var getData = function(arr) {
+                var i,nextI,len,m; //i、m 循环用的  nextI 数组中不等于0的索引值 len数组的长度
+                len = arr.length; //数组的长度
+                for (i = 0; i < len; i += 1) { //数组循环
+                    nextI = -1; //获取数组中不为0的索引值
+                    for (m = i+1; m < len; m++){ //获取第一次循环中某个下标不为0的索引
+                        if(arr[m] !== 0) { //判断当前数组遍历不为0的进入
+                            nextI = m; //赋值不为0的索引值
+                            break;
+                        }
+                    }
+                    if (nextI !== -1) { //如果nextI == -1 的话说明该数组里都是0
+                        //存在下个不为0的位置
+                        if (arr[i] === 0) { //判断当前数组下标是否为0
+                            arr[i] = arr[nextI]; //将不为0的下标数组赋值给最前面为0的下标
+                            arr[nextI] = 0; //清空当前下标索引
+                            i -= 1;
+                        } else if (arr[i] === arr[nextI]) { //判断当前下标和遍历下标相同时 相乘
+                            arr[i] = arr[i] *2;
+                            arr[nextI] = 0; //清空当前下标索引
+                        }
+                    }
+                }
+                return arr;
+            };
+            //            向右、向下移動
+            var getDataRigth = function(arr) {
+                var i,nextI,len,m; //i、m 循环用的  nextI 数组中不等于0的索引值 len数组的长度
+                len = arr.length; //数组的长度
+                for (i = len - 1; i > -1; i -= 1) { //数组循环
+                    nextI = -1; //获取数组中不为0的索引值
+                    for (m = i - 1; m > -1; m--){ //获取第一次循环中某个下标不为0的索引
+                        if(arr[m] !== 0) { //判断当前数组遍历不为0的进入
+                            nextI = m; //赋值不为0的索引值
+                            break;
+                        }
+                    }
+                    if (nextI !== -1) { //如果nextI == -1 的话说明该数组里都是0
+                        //存在下个不为0的位置
+                        if (arr[i] === 0) { //判断当前数组下标是否为0
+                            arr[i] = arr[nextI]; //将不为0的下标数组赋值给最前面为0的下标
+                            arr[nextI] = 0; //清空当前下标索引
+                            i += 1;
+                        } else if (arr[i] === arr[nextI]) { //判断当前下标和遍历下标相同时 相乘
+                            arr[i] = arr[i] *2;
+                            arr[nextI] = 0; //清空当前下标索引
+                        }
+                    }
+                }
+                return arr;
+            };
+            //     生成随机数字
+            var random = function () {
+                var num ,i; //随机push进一个 2
+                for (i = 0; i<100; i++) {
+                    num = Math.ceil(Math.random() * 10 - 1); //生成随机数
+                    Math.abs(num); //取整绝对值
+                    if (arr[num] === 0) { //判断该位置如果为0的话随机push进一个 2
+                        arr[num] = 2; //将随机抽取的空格赋值
+                        $('.module').eq(num).css("background", "DarkOrange"); //将随机抽取的空格2 赋值上颜色
+                        //重新排序赋值
+                        arr1 = [arr[0], arr[1], arr[2]];
+                        arr2 = [arr[3], arr[4], arr[5]];
+                        arr3 = [arr[6], arr[7], arr[8]];
+                        for (var i=0;i<9;i++){
+                            $('.module').eq(i).html(arr[i] === 0 ? '' : arr[i]);
+                        }
+                        break;
+                    }
+                }
+                optional = true; //防止连续点击
+            };
+            //将获取到数组渲染到页面上
+            function drawingHtml(array, repent) {
+                for (var i=0;i<9;i++){
+                    $('.module').eq(i).html(array[i] === 0 ? '' : array[i]);
+                    //判断对应的数字赋值对应的颜色
+                    if (arr[i] === 2) {
+                        $('.module').eq(i).css("background", "DarkOrange");
+                    } else if (arr[i] === 4) {
+                        $('.module').eq(i).css("background", "Crimson");
+                    } else if (arr[i] === 8) {
+                        $('.module').eq(i).css("background", "Yellow");
+                    } else if (arr[i] === 16) {
+                        $('.module').eq(i).css("background", "DarkGreen");
+                    } else if (arr[i] === 32) {
+                        $('.module').eq(i).css("background", "blue");
+                    } else if (arr[i] === 64) {
+                        $('.module').eq(i).css("background", "Navy");
+                    } else if (arr[i] === 128) {
+                        $('.module').eq(i).css("background", "Purple");
+                    } else {
+                        $('.module').eq(i).css("background", "white");
+                    }
+                }
+                console.log(repent + 'repent');
+                if ((arrRatio.toString() != arr.toString() && !repent)) {  //判断当前数组和之前数组是否一致， 一致则不增加随机数
+                    random(); //随机生成数
+                } else { //判断游戏结束
+                    optional = true; //防止连续点击
+                    if (arr.indexOf(0) === -1) {
+                        var gatherNum = arr[0] + arr[1] + arr[2] + arr[3] + arr[4] + arr[5] +arr[6] +arr[7] + arr[8];
+                        alert('游戏结束,您的分数为' + gatherNum);
+                    }
+                }
+            };
+            //悔一步
+            $('.repent').click(function(){
+                arr = arrRatio; //返回之前的数组
+                //重新排序赋值
+                drawingHtml(arr, repent = 1);
+            });
+        });
+    </script>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body style="padding: 0;margin: 0;">
+<div class="container">
+    <!--2048-->
+    <div class="casket">
+        <!--样式div-->
+        <div class="casket-across"></div>
+        <div class="casket-across across-two"></div>
+        <div class="casket-upright"></div>
+        <div class="casket-upright upright-two"></div>
+        <!--移动模块-->
+        <span class="module"></span>
+        <span class="module"></span>
+        <span class="module"></span>
+        <span class="module"></span>
+        <span class="module"></span>
+        <span class="module"></span>
+        <span class="module"></span>
+        <span class="module"></span>
+        <span class="module"></span>
+    </div>
+</div>
+<div class="repent">悔一步</div>
+</body>
+</html>
