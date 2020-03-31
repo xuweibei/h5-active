@@ -1,0 +1,82 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+}
+.container{
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    min-height: 100vh;
+}
+.casket{
+    position: absolute;
+    box-sizing: unset;
+    border: 12px solid #919191;
+    border-radius: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    clear:both;
+}
+.casket-across{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100px;
+    box-sizing: border-box;
+    border-bottom:4px solid #000000;
+}
+.across-two{
+    top: 100px;
+}
+.casket-upright{
+    position: absolute;
+    left: 100px;
+    top: 0;
+    height: 300px;
+    box-sizing: border-box;
+    border-right:4px solid #000000;
+}
+.upright-two{
+    left: 200px;
+}
+
+/*模块样式*/
+.module{
+    width: 96px;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #000000;
+}
+/*悔一步*/
+.repent{
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 36px;
+    cursor: pointer;
+    width: 140px;
+    height: 60px;
+    background: blue;
+    color: white;
+    margin: 20px auto;
+    display: none;
+}
+.casket-bottom{
+    position: absolute;
+    bottom: 100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ascertain{
+    cursor: pointer;
+}
